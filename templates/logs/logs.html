@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='barContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+<style>
+        .info-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+            width: 80%;
+        }
+</style>
+
+</head>
+<body>
+
+{% include 'navbar.html' %}
+{% include 'logsBar.html' %}
+
+<div class="main-container">
+    {% for log in logs %}
+    <div class="info-box">
+        <h4 style="display:inline;">{{ log[6] }} - {{ log[4] }} {{ log[5] }}</h4>
+        {% if log[2] == 0 %}
+        <h5>System</h5>
+        <h5>System</h5>
+        {% else %}
+        <h5>{{ log[2] }}</h5>
+        <h5>{{ log[3] }}</h5>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+
+
+</body>
+</html>

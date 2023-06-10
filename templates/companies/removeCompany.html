@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Remove Company</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='barContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+
+  <style>
+    select {
+            width: 100%;
+            height: 40px;
+        }
+  </style>
+</head>
+<body>
+
+{% include 'navbar.html' %}
+{% include 'companiesBar.html' %}
+
+<div class="main-container">
+    <form action="/removeCompany" method="POST">
+        <label for="company">Companies:</label>
+        <select id="company" name="company">
+                  {% for company in companies %}
+                  <option value="{{ company[0] }}">{{ company[0] }} - {{ company[1] }}</option>
+                  {% endfor %}
+                </select>
+        </br>
+        <div id="button-container">
+            </br>
+                <button type="submit" value="Submit">Remove Company</button>
+        </div>
+    </form>
+    <p>{{ status }}</p>
+</div>
+
+</body>
+</html>

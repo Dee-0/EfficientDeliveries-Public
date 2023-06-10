@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Driver</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='barContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='form.css') }}">
+
+<style>
+
+</style>
+
+</head>
+<body>
+
+{% include 'navbar.html' %}
+{% include 'driverBar.html' %}
+
+<div class="main-container">
+
+    <div class="formbold-main-wrapper">
+  <div class="formbold-form-wrapper">
+      <h1>Add a new Driver</h1>
+      <h3>Driver sign in credentials:</h3>
+      </br>
+    <form action="/addDriver" method="POST">
+        <div class="formbold-input-flex">
+          <div>
+              <label for="username" class="formbold-form-label"> Username </label>
+              <input
+              type="text"
+              name="username"
+              id="username"
+              placeholder="Username"
+              class="formbold-form-input"
+              />
+          </div>
+          <div>
+              <label for="password" class="formbold-form-label"> Password </label>
+              <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Password"
+              class="formbold-form-input"
+              />
+          </div>
+        </div>
+        <div class="formbold-input-flex">
+        </div>
+        <h3>Driver personal information:</h3>
+        </br>
+        <div class="formbold-input-flex">
+            <div>
+              <label for="firstName" class="formbold-form-label"> First Name </label>
+              <input
+              type="text"
+              name="firstName"
+              id="firstName"
+              placeholder="John"
+              class="formbold-form-input"
+              />
+          </div>
+            <div>
+              <label for="lastName" class="formbold-form-label"> Last Name </label>
+              <input
+              type="text"
+              name="lastName"
+              id="lastName"
+              placeholder="Doe"
+              class="formbold-form-input"
+              />
+          </div>
+        </div>
+        <div class="formbold-input-flex">
+          <div>
+              <label for="email" class="formbold-form-label"> Email </label>
+              <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Driver@Company.com"
+              class="formbold-form-input"
+              />
+          </div>
+          <div>
+              <label for="phone" class="formbold-form-label"> Phone </label>
+              <input
+              type="text"
+              name="phone"
+              id="phone"
+              placeholder="01-2345678"
+              class="formbold-form-input"
+              />
+          </div>
+        </div>
+
+        <h3>Company:</h3>
+      </br>
+    {% if session['user_type'] == 1 %}
+    <select id="company_name" name="company_name" style="width:100%; height:30px">
+      {% for company in companies %}
+      <option value="{{ company[1] }}">{{ company[1] }}</option>
+      {% endfor %}
+    </select>
+    {% else %}
+    <label>Company: {{ session['company_id'] }}</label>
+    {% endif %}
+        </br></br>
+
+        <button class="formbold-btn">
+            Add Driver
+        </button>
+    </form>
+  </div>
+</div>
+
+</div>
+
+
+</body>
+</html>

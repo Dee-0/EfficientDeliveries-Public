@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sent Messages</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='barContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+<style>
+        .info-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+            width: 80%;
+        }
+</style>
+
+</head>
+<body>
+
+{% include 'navbar.html' %}
+{% include 'messagesBar.html' %}
+
+<div class="main-container">
+    {% for message in messages %}
+    <div class="info-box">
+        <h2 style="display:inline;">To: {{ message[2] }}</h2> <h4>{{ message[5] }} - {{message[4] }}</h4>
+        </br>
+        <p> {{ message[3] }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Open Deliveries</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='barContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='tableStyle.css') }}">
+<style>
+
+</style>
+
+</head>
+<body>
+
+{% include 'navbar.html' %}
+{% include 'deliveriesBar.html' %}
+
+<div class="main-container">
+
+    <h1>Open Deliveries</h1>
+    {% if routes|length != 0 %}
+    <form action="/openDeliveries" method="POST">
+        <select id="route" name="route" style="height:30px">
+            {% for route in routes %}
+            <option value="{{ route[0] }}">{{ route[7] }} {{ route[8] }} - - - {{ route[4] }} {{ route[5] }}</option>
+            {% endfor %}
+        </select>
+        </br>
+        <div id="button-container" style="text-align:center">
+            </br>
+            <button type="submit" value="Submit">Mark as complete</button>
+        </div>
+    </form>
+    {% endif %}
+
+<div class="table-wrapper">
+    <table class="fl-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Origin</th>
+            <th>Destinations</th>
+            <th>Distance</th>
+            <th>Date created</th>
+            <th>Time created</th>
+            <th>Assigned to</th>
+            <th>Completed</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for route in routes %}
+        <tr>
+            <td>{{ route[0] }}</td>
+            <td>{{ route[4] }}</td>
+            <td>{{ route[5] }}</td>
+            <td>{{ route[6] }}</td>
+            <td>{{ route[7] }}</td>
+            <td>{{ route[8] }}</td>
+            {% if route[3] == -1 %}
+            <td>UNASSIGNED</td>
+            {% else %}
+            <td>{{ route[3] }}</td>
+            {% endif %}
+            {% if route[10] == 1 %}
+            <td>🗸</td>
+            {% else %}
+            <td>X</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+
+        <tbody>
+    </table>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Remove a Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='barContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+
+  <style>
+    select {
+            width: 100%;
+            height: 40px;
+        }
+  </style>
+</head>
+<body>
+
+{% include 'navbar.html' %}
+{% include 'managersBar.html' %}
+
+<div class="main-container">
+    <form action="/removeManager" method="POST">
+        <label for="manager">Managers:</label>
+        <select id="manager" name="manager">
+                  {% for manager in managers %}
+                  <option value="{{ manager[2] }}">{{ manager[2] }} - {{ manager[4] }} {{ manager[5] }}</option>
+                  {% endfor %}
+                </select>
+        </br>
+        <div id="button-container">
+            </br>
+                <button type="submit" value="Submit">Remove Manager</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

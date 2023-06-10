@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Route</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='barContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+
+ <style>
+    #input-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    #input-area {
+      width: 300px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    #list-container {
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .list-item {
+      margin-bottom: 5px;
+    }
+
+    .hidden {
+            display: none;
+        }
+  </style>
+</head>
+<body>
+
+{% include 'navbar.html' %}
+{% include 'routeBar.html' %}
+
+<div class="main-container">
+
+ <div id="input-container">
+     <h1>Enter origin address followed by destinations to add to the route list</h1>
+    <input type="text" id="input-area" placeholder="Enter Address" autocomplete="off">
+    <button onclick="addItem()">Add Address</button>
+     <button id ="createRoute" onclick="sendData()">Create Route</button>
+    <div id="list-container">
+    </div>
+  </div>
+    </br>
+    <p id="displayText" class="hidden">Route creation algorhitm began </br> you will receive a message when its finished, please wait.</p>
+</div>
+
+
+
+  <script>
+
+    var items = [];
+
+    function addItem() {
+      const inputArea = document.getElementById('input-area');
+      const listContainer = document.getElementById('list-container');
+      const newItem = inputArea.value.trim();
+      items.push(newItem);
+
+      if (newItem !== '') {
+        const listItem = document.createElement('div');
+        listItem.classList.add('list-item');
+        listItem.textContent = newItem;
+        listContainer.appendChild(listItem);
+        inputArea.value = '';
+        listContainer.style.display = 'block';
+      }
+    }
+
+    function sendData() {
+      var jsonData = JSON.stringify({data: items});
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "/processData", true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          console.log(xhr.responseText);
+        }
+      };
+      xhr.send(jsonData);
+    }
+
+    const myButton = document.getElementById('createRoute');
+        const displayText = document.getElementById('displayText');
+
+        myButton.addEventListener('click', function() {
+            displayText.classList.remove('hidden');
+        });
+
+  </script>
+
+
+
+</body>
+</html>

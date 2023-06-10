@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Route Display</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='barContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+
+    <style>
+        iframe{
+            height:calc(85vh);
+            width:calc(45vw);
+        }
+    </style>
+
+</head>
+<body>
+
+{% include 'navbar.html' %}
+{% if session['user_type'] != 3 %}
+{% include 'routebar.html' %}
+{% endif %}
+
+<div class="main-container">
+<iframe src="{{ url_for('map_display') }}"></iframe>
+<p>Origin: {{ origin }}</p>
+</br>
+<p>Destinations: {{ destinations }}</p>
+</br>
+<p>Distance: {{ distance }}</p>
+</div>
+
+
+</body>
+</html>

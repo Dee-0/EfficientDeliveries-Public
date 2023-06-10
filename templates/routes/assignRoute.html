@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assign a Route</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='barContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+
+    <style>
+        select {
+            width: 100%;
+            height: 40px;
+        }
+    </style>
+</head>
+<body>
+
+{% include 'navbar.html' %}
+{% include 'routeBar.html' %}
+
+<div class="main-container">
+
+    <h2>Select a Driver and a Route to assign</h2>
+
+    <form action="/assignRoute" method="POST">
+        <label for="driver">Drivers:</label>
+        <select id="driver" name="driver">
+            {% for driver in drivers %}
+            <option value="{{ driver[2] }}">{{ driver[2] }} - {{ driver[4] }} {{ driver[5] }}</option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <label for="route">Routes:</label>
+        <select id="route" name="route">
+            {% for route in routes %}
+            <option value="{{ route[9] }}">{{ route[7] }} {{ route[8] }} - - - {{ route[4] }} {{ route[5] }}</option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <div id="button-container">
+            <button type="submit" value="Submit">Assign Route</button>
+        </div>
+    </form>
+
+</div>
+
+</body>
+</html>

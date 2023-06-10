@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Companies</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='barContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='tableStyle.css') }}">
+<style>
+
+</style>
+
+</head>
+<body>
+
+{% include 'navbar.html' %}
+{% include 'companiesBar.html' %}
+
+<div class="main-container">
+
+    <h1>Companies</h1>
+<div class="table-wrapper">
+    <table class="fl-table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Manager</th>
+            <th>Address</th>
+            <th>Email</th>
+            <th>Phone</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for company in companies %}
+        <tr>
+            <td>{{ company[1] }}</td>
+            <td>ADD FUNCTION</td>
+            <td>{{ company[2] }}</td>
+            <td>{{ company[3] }}</td>
+            <td>{{ company[4] }}</td>
+        </tr>
+        {% endfor %}
+
+        <tbody>
+    </table>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Navbar</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='menusidebar.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+</head>
+<body>
+
+<div class="wrapper">
+        <!--Top menu -->
+        <div class="sidebar">
+           <!--profile image & text-->
+            <ul>
+                <li>
+                    <a href="/">
+                        <span class="icon"><i class="fas fa-home"></i></span>
+                        <span class="item">Home</span>
+                    </a>
+                </li>
+                {% if 'user_type' in session %}
+                {% if session['user_type'] == 3 %}
+                <li>
+                    <a href="driverRoutesPage">
+                        <span class="icon"><i class="fas fa-route"></i></span>
+                        <span class="item">Routes</span>
+                    </a>
+                </li>
+                {% else %}
+                <li>
+                    <a href="newRoute">
+                        <span class="icon"><i class="fas fa-route"></i></span>
+                        <span class="item">Routes</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                        <li>
+                            <a href="manageDeliveries">
+                                <span class="icon"><i class="fas fa-cube"></i></span>
+                                <span class="item">Manage Deliveries</span>
+                            </a>
+                        </li>
+
+                {% if 'user_type' in session %}
+                    {% if session['user_type'] == 1 %}
+                <li>
+                    <a href="manageCompanies">
+                        <span class="icon"><i class="fas fa-user-friends"></i></span>
+                        <span class="item">Manage Companies</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="manageManagers">
+                        <span class="icon"><i class="fas fa-user-friends"></i></span>
+                        <span class="item">Manage Managers</span>
+                    </a>
+                </li>
+                    {% endif %}
+                {% endif %}
+                {% if 'user_type' in session %}
+                    {% if session['user_type'] == 1 or session['user_type'] == 2 %}
+                <li>
+                    <a href="manageDrivers">
+                        <span class="icon"><i class="fas fa-truck"></i></span>
+                        <span class="item">Manage Drivers</span>
+                    </a>
+                </li>
+                    {% endif %}
+                {% endif %}
+                <li>
+                    <a href="messages">
+                        <span class="icon"><i class="fas fa-comment"></i></span>
+                        <span class="item">Messages({{ session['unread_messages'] }})</span>
+                    </a>
+                </li>
+                {% if 'user_type' in session %}
+                    {% if session['user_type'] == 1 or session['user_type'] == 2 %}
+                <li>
+                    <a href="logs">
+                        <span class="icon"><i class="fas fa-database"></i></span>
+                        <span class="item">Logs</span>
+                    </a>
+                </li>
+                    {% endif %}
+                {% endif %}
+                {% endif %}
+                <li>
+                    <a href="login">
+                        <span class="icon"><i class="fas fa-user-shield"></i></span>
+                        <span class="item">{% if 'username' in session %}
+                                            {{ session['username'] }}
+                                            {% else %}
+                                            {{ 'Login' }}
+                                            {% endif %}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+</body>
+</html>

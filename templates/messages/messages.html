@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Messages</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='barContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+<style>
+        .info-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+            width: 80%;
+        }
+
+        h2 {
+            display: inline;
+        }
+</style>
+
+</head>
+<body>
+
+{% include 'navbar.html' %}
+{% include 'messagesBar.html' %}
+
+<div class="main-container">
+    {% for message in messages %}
+    <div class="info-box">
+        <form action="/messages" method="POST">
+        <h2>From: {{ message[1] }}
+                                {% if message[6] == 0 %}
+                                <div id="button-container" style="display:inline;">
+                                <button type="submit" value="{{ message[0] }}" id="message_id" name="message_id">🗸</button>
+                                </div>
+                                {% endif %}
+        </h2>
+        <h4>{{ message[5] }} - {{message[4] }}</h4>
+        </br>
+        <p> {{ message[3] }}</p>
+            </form>
+    </div>
+
+    {% endfor %}
+</div>
+
+
+</body>
+</html>

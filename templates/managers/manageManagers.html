@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Managers</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='barContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='tableStyle.css') }}">
+<style>
+
+</style>
+
+</head>
+<body>
+
+{% include 'navbar.html' %}
+{% include 'managersBar.html' %}
+
+<div class="main-container">
+
+    <h1>Companies</h1>
+<div class="table-wrapper">
+    <table class="fl-table">
+        <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Company
+        </thead>
+        <tbody>
+        {% for manager in managers %}
+        <tr>
+            <td>{{ manager[4] }}</td>
+            <td>{{ manager[5] }}</td>
+            <td>{{ manager[6] }}</td>
+            {% for company in companies %}
+            {% if company[0] == manager[7] %}
+            <td>{{ company[1] }}</td>
+            {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+
+        <tbody>
+    </table>
+</div>
+
+</div>
+
+
+</body>
+</html>

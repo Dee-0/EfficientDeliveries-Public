@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Message</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='barContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+<style>
+        textarea {
+            width: 400px;
+            height: 200px;
+        }
+</style>
+
+</head>
+<body>
+
+{% include 'navbar.html' %}
+{% include 'messagesBar.html' %}
+
+<div class="main-container">
+
+        <h2>Send Message</h2>
+    <form action="/newMessage" method="POST">
+        </br>
+        <label for="username">Users:</label>
+        </br>
+        <select id="username" name="username" style="height:30px">
+            {% for user in recipients %}
+            <option value="{{ user[2] }}">{{ user[2] }} - {{ user[4] }} {{ user[5] }}</option>
+            {% endfor %}
+        </select>
+        </br></br>
+        <label for="message">Message:</label>
+        </br>
+        <textarea id="message" name="message" required></textarea><br><br>
+
+        <div id="button-container">
+            <button type="submit" value="Submit">Send Message</button>
+        </div>
+    </form>
+
+    <p>{{ status }}</p>
+
+</div>
+
+
+</body>
+</html>

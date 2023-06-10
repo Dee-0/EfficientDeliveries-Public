@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ session['username'] }} User Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='barContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+
+
+</head>
+<body>
+
+{% include 'navbar.html' %}
+{% include 'userBar.html' %}
+
+<div class="main-container" style="text-align: left;">
+    <h1>User information</h1> </br>
+    <p>Username: {{ user_info[0] }} </p>
+    <p>First Name: {{ user_info[1] }} </p>
+    <p>Last Name: {{ user_info[2] }} </p>
+    <p>Company: </p>
+
+</div>
+
+
+</body>
+</html>

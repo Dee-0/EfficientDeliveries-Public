@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Login</title>
+      <link rel="stylesheet" href="{{ url_for('static', filename='barContainer.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='mainContainer.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='menusidebar.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+  </head>
+  <body>
+
+{% include 'navbar.html' %}
+
+    <div class="container">
+
+      <div class="wrapper">
+        <div class="title"><span>Log in</span></div>
+        <form action="/login" method="POST" enctype="multipart/form-data">
+          <div class="row">
+            <i class="fas fa-user"></i>
+            <input type="text" name="username" placeholder="Username" id="username" required>
+          </div>
+          <div class="row">
+            <i class="fas fa-lock"></i>
+            <input type="password" name="password" placeholder="Password" id="password" required>
+          </div>
+          <div class="row button">
+            <input type="submit" value="Login">
+          </div>
+          <div class="signup-link">Not a member? <a href="/signup">Sign up now!</a></div>
+          <p></br>{{ status }}</p>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
