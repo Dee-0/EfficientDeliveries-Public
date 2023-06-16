@@ -9,7 +9,7 @@
 
   <style>
     select {
-            width: 100%;
+            width: 40%;
             height: 40px;
         }
   </style>
@@ -21,7 +21,8 @@
 
 <div class="main-container">
     <form action="/removeManager" method="POST">
-        <label for="manager">Managers:</label>
+        <h2>Managers:</h2>
+        </br>
         <select id="manager" name="manager">
                   {% for manager in managers %}
                   <option value="{{ manager[2] }}">{{ manager[2] }} - {{ manager[4] }} {{ manager[5] }}</option>

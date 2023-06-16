@@ -2,10 +2,17 @@
       position: relative;
       width: 55vw;
       height: 90vh;
-      border: 5px solid black;
-      display: flex;
+      border: 0px solid black;
+      display: static;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
       overflow: auto;
+      text-align:center;
+
     }
+.h1 {
+
+    text-align:center;
+
+}

@@ -32,8 +32,8 @@ h2{
     border-collapse: collapse;
     width: 100%;
     max-width: 100%;
-    white-space: nowrap;
     background-color: white;
+    table-layout: fixed;
 }
 
 .fl-table td, .fl-table th {
@@ -44,6 +44,8 @@ h2{
 .fl-table td {
     border-right: 1px solid #f8f8f8;
     font-size: 14px;
+    word-break: break-word;
+
 }
 
 .fl-table thead th {
@@ -100,6 +102,7 @@ h2{
         width: 120px;
         font-size: 13px;
         text-overflow: ellipsis;
+
     }
     .fl-table thead th {
         text-align: left;

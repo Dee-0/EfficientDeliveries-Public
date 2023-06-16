@@ -5,9 +5,9 @@ from werkzeug.security import generate_password_hash
 from datetime import datetime
 
 from db_interaction import get_all_managers_and_companies, get_all_drivers_and_companies
-from db_users import add_user, get_all_managers, remove_manager, remove_driver, get_all_drivers, get_driver_by_id
+from db_users import add_user, get_all_managers, remove_manager_db, remove_driver, get_all_drivers, get_driver_by_id, get_drivers_by_company
 from db_routes import save_route, get_all_routes, get_all_routes_unassigned, assign_route_db, get_assigned_routes, get_route_info, get_all_driver_routes, get_routes_by_status, mark_route_complete, get_route_by_id, get_all_routes_driver
-from db_companies import get_all_companies, addCompany, removeCompany
+from db_companies import get_all_companies, addCompany, removeCompany, get_company_by_id
 from db_messages import get_all_messages, send_message, get_possible_recipients, get_all_sent_messages, set_message_read
 from db_logs import get_all_logs, add_to_log, get_logs_by_type
 from db_user_page import login_check, confirm_pasword
@@ -100,9 +100,10 @@ def process_data():
 @app.route("/newRouteDisplay", methods=["GET", "POST"])
 def display_route():
     if request.method == "POST":
-        route = request.form.get("selected_route")
+        route = request.form.get("route_filename")
         session['route_file_name'] = route
         route = f"templates\saved_routes\{route}"
+        print(route)
         session['last_route_generated'] = route
         route_info = get_route_info(session['route_file_name'])
         origin = route_info[0][4]
@@ -230,7 +231,8 @@ def view_closed_deliveries():
 @app.route("/manageCompanies")
 def manage_companies():
     companies = get_all_companies()
-    return render_template("companies/manageCompanies.html", companies=companies)
+    managers = get_all_managers()
+    return render_template("companies/manageCompanies.html", companies=companies, managers=managers)
 
 
 # Add a company
@@ -271,6 +273,7 @@ def remove_company():
         companies = get_all_companies()
         if request.method == "POST":
             company_id = request.form.get("company")
+            company = get_company_by_id(company_id)
             if removeCompany(company_id):
                 status = "Company Removed!"
                 successful = "Successful"
@@ -279,7 +282,7 @@ def remove_company():
                 successful = "Unsuccessful"
             date, time = get_current_time_date()
             add_to_log(session['user_type'], session['company_id'], session['username'],
-                       f"Company {company_id} was removed {successful}", date, time, successful, 2)
+                       f"Company {company[0][1]} was removed {successful}", date, time, successful, 2)
             return render_template("companies/removeCompany.html", companies=companies, status=status)
     else:
         return render_template("index.html")
@@ -330,7 +333,7 @@ def remove_manager():
         managers = get_all_managers()
         if request.method == "POST":
             username = request.form.get("manager")
-            if remove_manager(username):
+            if remove_manager_db(username):
                 successful = "successful"
             else:
                 successful = "unsuccessful"
@@ -352,6 +355,23 @@ def manage_drivers():
     if check_if_manager():
         drivers, companies = get_all_drivers_and_companies(session['company_id'])
         return render_template("drivers/manageDrivers.html", drivers=drivers, companies=companies)
+    else:
+        return render_template("index.html")
+
+# Show drivers by company id
+@app.route("/companyDrivers", methods=["GET", "POST"])
+def drivers_by_company():
+    companies = get_all_companies()
+    if check_if_admin():
+        if request.method == "POST":
+            company_id = request.form.get("company_id")
+            if company_id != None:
+                drivers = get_drivers_by_company(company_id)
+                return render_template("drivers/companyDrivers.html", drivers=drivers, companies=companies)
+            else:
+                return render_template("drivers/companyDrivers.html", companies=companies)
+        else:
+            return render_template("drivers/companyDrivers.html", companies=companies)
     else:
         return render_template("index.html")
 

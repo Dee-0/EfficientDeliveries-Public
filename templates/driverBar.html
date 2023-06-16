@@ -13,6 +13,10 @@
 <div class="container" style="">
     <button onclick=window.location.href="manageDrivers">Drivers List</button>
     </br>
+    {% if session['user_type'] == 1 %}
+    <button onclick=window.location.href="companyDrivers">Drivers - By company</button>
+    </br>
+    {% endif %}
     <button onclick=window.location.href="addDriver">Add Driver</button>
     </br>
     <button onclick=window.location.href="removeDriver">Remove Driver</button>

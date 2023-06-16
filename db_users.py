@@ -35,6 +35,14 @@ def get_driver_by_id(driver_id):
         return driver
 
 
+# Get all drivers and companies by company id
+def get_drivers_by_company(company_id):
+    with sqlite3.connect("database.db") as users:
+        cursor = users.cursor()
+        cursor.execute(f"SELECT * FROM users WHERE company_id = {company_id} AND user_type = 3")
+        drivers = cursor.fetchall()
+        return drivers
+
 # Remove a driver
 def remove_driver(username):
     with sqlite3.connect("database.db") as users:
@@ -57,7 +65,7 @@ def get_all_managers():
         return managers
 
 # Remove a manager
-def remove_manager(username):
+def remove_manager_db(username):
     with sqlite3.connect("database.db") as users:
         cursor = users.cursor()
         cursor.execute(f"DELETE FROM users WHERE username = '{username}'")

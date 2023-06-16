@@ -11,7 +11,8 @@
             border: 1px solid #ccc;
             padding: 10px;
             margin-bottom: 20px;
-            width: 80%;
+            width: 100%;
+            margin:auto;
         }
 
         h2 {
@@ -32,7 +33,7 @@
         <h2>From: {{ message[1] }}
                                 {% if message[6] == 0 %}
                                 <div id="button-container" style="display:inline;">
-                                <button type="submit" value="{{ message[0] }}" id="message_id" name="message_id">🗸</button>
+                                <button type="submit" value="{{ message[0] }}" id="message_id" name="message_id" style="font-size: 15px;">🗸</button>
                                 </div>
                                 {% endif %}
         </h2>

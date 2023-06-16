@@ -35,7 +35,13 @@
         {% for company in companies %}
         <tr>
             <td>{{ company[1] }}</td>
-            <td>ADD FUNCTION</td>
+            <td>
+            {% for manager in managers if company[0] == manager[7]%}
+                    {{ manager[4] }} </br>
+            {% else %}
+                 -
+            </td>
+            {% endfor %}
             <td>{{ company[2] }}</td>
             <td>{{ company[3] }}</td>
             <td>{{ company[4] }}</td>

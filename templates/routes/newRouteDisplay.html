@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='barContainer.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='mainContainer.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='tableStyle.css') }}">
 
     <style>
         iframe{
@@ -24,11 +25,26 @@
 
 <div class="main-container">
 <iframe src="{{ url_for('map_display') }}"></iframe>
-<p>Origin: {{ origin }}</p>
-</br>
-<p>Destinations: {{ destinations }}</p>
-</br>
-<p>Distance: {{ distance }}</p>
+
+<div class="table-wrapper">
+    <table class="fl-table">
+        <thead>
+        <tr>
+            <th>Origin</th>
+            <th>Destinations</th>
+            <th>Distance</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ origin }}</td>
+            <td>{{ destinations }}</td>
+            <td>{{ distance }}</td>
+        </tr>
+
+        <tbody>
+    </table>
+</div>
 </div>
 
 

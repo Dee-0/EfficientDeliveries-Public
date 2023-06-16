@@ -9,7 +9,7 @@
 
   <style>
     select {
-            width: 100%;
+            width: 40%;
             height: 40px;
         }
   </style>
@@ -21,7 +21,8 @@
 
 <div class="main-container">
     <form action="/removeCompany" method="POST">
-        <label for="company">Companies:</label>
+        <h2>Companies:</h2>
+        </br>
         <select id="company" name="company">
                   {% for company in companies %}
                   <option value="{{ company[0] }}">{{ company[0] }} - {{ company[1] }}</option>

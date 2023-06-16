@@ -21,9 +21,19 @@ def get_all_companies():
         companies = cursor.fetchall()
         return companies
 
+# Get company by id
+def get_company_by_id(company_id):
+    with sqlite3.connect("database.db") as companies:
+        cursor = companies.cursor()
+        cursor.execute(f"SELECT * FROM companies WHERE id = {company_id}")
+        companies = cursor.fetchall()
+        return companies
+
 # Remove company from database
 def removeCompany(company_id):
     with sqlite3.connect("database.db") as companies:
         cursor = companies.cursor()
         cursor.execute(f"DELETE FROM companies WHERE id = {company_id}")
         companies.commit()
+        return True
+    return False

@@ -9,7 +9,7 @@
 
   <style>
     select {
-            width: 100%;
+            width: 40%;
             height: 40px;
         }
   </style>
@@ -21,7 +21,8 @@
 
 <div class="main-container">
     <form action="/removeDriver" method="POST">
-        <label for="driver">Drivers:</label>
+        <h2>Drivers:</h2>
+        </br>
         <select id="driver" name="driver">
                   {% for driver in drivers %}
                   <option value="{{ driver[2] }}">{{ driver[2] }} - {{ driver[4] }} {{ driver[5] }}</option>
