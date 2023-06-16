@@ -570,8 +570,8 @@ def login():
         username = request.form.get("username")
         username_for_log = username
         password = request.form.get("password")
-        correct, user_id, user_type ,username, first_name, last_name, company_id, email = login_check(username,password)
-        if (correct):
+        correct_creds, user_id, user_type ,username, first_name, last_name, company_id, email = login_check(username,password)
+        if (correct_creds):
             session['user_id'] = user_id
             session['user_type'] = user_type
             session['username'] = username
