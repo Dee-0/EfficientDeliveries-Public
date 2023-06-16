@@ -48,7 +48,7 @@
 
 <div class="main-container">
     <form action="/newRouteDisplay" method="POST">
-        <select name="selected_route" class="selectpicker form-control">
+        <select name="route_filename" class="selectpicker form-control">
                   {% for route in routes %}
                   <option value="{{ route[9] }}">{{ route[7] }} {{ route[8] }} - - - {{ route[4] }} {{ route[5] }}</option>
                   {% endfor %}

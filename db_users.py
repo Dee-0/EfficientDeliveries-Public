@@ -44,7 +44,7 @@ def get_drivers_by_company(company_id):
         return drivers
 
 # Remove a driver
-def remove_driver(username):
+def remove_driver_db(username):
     with sqlite3.connect("database.db") as users:
         cursor = users.cursor()
         cursor.execute(f"DELETE FROM users WHERE username = '{username}'")

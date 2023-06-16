@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Drivers</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='barContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='tableStyle.css') }}">
+<style>
+select {
+            width: 20%;
+            height: 40px;
+        }
+</style>
+
+</head>
+<body>
+
+{% include 'navbar.html' %}
+{% include 'driverBar.html' %}
+
+<div class="main-container">
+
+    <h1>Drivers</h1>
+    </br>
+    <form action="/companyDrivers" method="POST">
+        <label for="company_id">Sort by company:</label>
+        <select id="company_id" name="company_id">
+                  {% for company in companies %}
+                  <option value="{{ company[0] }}">{{ company[1] }}</option>
+                  {% endfor %}
+                </select>
+        </br>
+        <div id="button-container">
+            </br>
+                <button type="submit" value="Submit">Sort</button>
+        </div>
+    </form>
+
+<div class="table-wrapper">
+    <table class="fl-table">
+        <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Company</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for driver in drivers %}
+        <tr>
+            <td>{{ driver[4] }}</td>
+            <td>{{ driver[5] }}</td>
+            <td>{{ driver[6] }}</td>
+            {% for company in companies %}
+            {% if company[0] == driver[7] %}
+            <td>{{ company[1] }}</td>
+            {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+
+        <tbody>
+    </table>
+</div>
+
+</div>
+
+
+</body>
+</html>

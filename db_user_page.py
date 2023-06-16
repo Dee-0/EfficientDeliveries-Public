@@ -19,8 +19,9 @@ def login_check(username, password):
                     first_name = user[4]
                     last_name = user[5]
                     company_id = user[7]
-                    return True, user_id, user_type, username, first_name, last_name, company_id
-        return False, -1, -1, -1, -1, -1, -1
+                    email = user[6]
+                    return True, user_id, user_type, username, first_name, last_name, company_id, email
+        return False, -1, -1, -1, -1, -1, -1, -1
 
 
 # Check password hash to new password input to confirm its the same password

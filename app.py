@@ -3,10 +3,11 @@ import sqlite3
 from flask import Flask, render_template, request, session, redirect, url_for
 from werkzeug.security import generate_password_hash
 from datetime import datetime
+from route_queue import calc_route_task
 
 from db_interaction import get_all_managers_and_companies, get_all_drivers_and_companies
-from db_users import add_user, get_all_managers, remove_manager_db, remove_driver, get_all_drivers, get_driver_by_id, get_drivers_by_company
-from db_routes import save_route, get_all_routes, get_all_routes_unassigned, assign_route_db, get_assigned_routes, get_route_info, get_all_driver_routes, get_routes_by_status, mark_route_complete, get_route_by_id, get_all_routes_driver
+from db_users import add_user, get_all_managers, remove_manager_db, remove_driver_db, get_all_drivers, get_driver_by_id, get_drivers_by_company
+from db_routes import save_route, remove_route_db,get_all_routes, get_all_routes_unassigned, assign_route_db, get_assigned_routes, get_route_info, get_all_driver_routes, get_routes_by_status, mark_route_complete, get_route_by_id, get_all_routes_driver
 from db_companies import get_all_companies, addCompany, removeCompany, get_company_by_id
 from db_messages import get_all_messages, send_message, get_possible_recipients, get_all_sent_messages, set_message_read
 from db_logs import get_all_logs, add_to_log, get_logs_by_type
@@ -71,6 +72,7 @@ def routes_page():
         return render_template("routes/viewRoutes.html")
 
 
+# Return map file
 @app.route("/generatedRoute")
 def generated_route():
     return flask.send_file("generatedRoute.html")
@@ -82,17 +84,18 @@ def process_data():
     data = request.json['data']
     origin = data[0]
     destinations = data[1:]
-    save_route(session['company_id'], session['username'], origin, destinations)
     message_date = datetime.now().strftime("%d.%m.%Y")
     message_time = datetime.now().strftime("%H:%M:%S")
-    message_text = f"Route from {origin} to {destinations} created!"
-    if send_message("System", session['username'], message_text, message_date, message_time):
-        successful = "successfully"
+    if save_route(session['company_id'], session['username'], origin, destinations):
+        message_text = f"Route from {origin} to {destinations} created!"
+        successful = "successfull"
     else:
-        successful = "unsuccessfully"
+        message_text = f"Could not create route from ' {origin} ' to {destinations}, perhaps the address does not exist or there is a typo, please try again."
+        successful = "unsuccessfull"
+    send_message("System", session['username'], message_text, message_date, message_time)
     date, time = get_current_time_date()
     add_to_log(session['user_type'], session['company_id'], session['username'],
-               f"Route from {origin} to {destinations} was created {successful}", date, time, successful, 1)
+               f"Route from {origin} to {destinations} creation was  {successful}", date, time, successful, 1)
     return render_template("routes/viewRoutes.html")
 
 
@@ -103,14 +106,11 @@ def display_route():
         route = request.form.get("route_filename")
         session['route_file_name'] = route
         route = f"templates\saved_routes\{route}"
-        print(route)
         session['last_route_generated'] = route
         route_info = get_route_info(session['route_file_name'])
         origin = route_info[0][4]
         destinations = route_info[0][5]
-        distance = ((route_info[0][6])/1000)
-        distance = "{:.2f}".format(distance)
-        distance = str(distance) + "KM"
+        distance = str(route_info[0][6]) + "KM"
 
         return render_template("routes/newRouteDisplay.html", distance=distance, origin=origin, destinations=destinations)
     return render_template("routes/newRouteDisplay.html")
@@ -120,6 +120,29 @@ def display_route():
 @app.route("/map_display")
 def map_display():
     return flask.send_file(session['last_route_generated'])
+
+
+# Remove a route
+@app.route("/removeRoute", methods=["GET", "POST"])
+def remove_route():
+    status = ""
+    if check_if_admin() or check_if_manager():
+        routes = get_all_routes(session['company_id'], -1)
+        if request.method == "POST":
+            route_id = request.form.get("route_id")
+            if remove_route_db(route_id):
+                status = "Route Removed!"
+                successful = "Successful"
+            else:
+                status = "Could not remove route."
+                successful = "Unsuccessful"
+            date, time = get_current_time_date()
+            add_to_log(session['user_type'], session['company_id'], session['username'],
+                       f"Route was removed {successful}", date, time, successful, 2)
+            return render_template("routes/removeRoute.html", routes=routes, status=status)
+    else:
+        return render_template("index.html")
+    return render_template("routes/removeRoute.html", routes=routes, status=status)
 
 
 # Assign a route to a driver
@@ -426,7 +449,7 @@ def remove_driver():
         drivers = get_all_drivers(session['company_id'])
         if request.method == "POST":
             username = request.form.get("driver")
-            if remove_driver(username):
+            if remove_driver_db(username):
                 status = "Driver removed!"
                 successful = "successful"
             else:
@@ -541,13 +564,13 @@ def user_info_logs():
 def login():
     status = ""
     if ('username' in session):
-        user_info = [session['username'], session['first_name'], session['last_name']]
+        user_info = [session['username'], session['first_name'], session['last_name'], session['email'], session['company_name']]
         return render_template("user/user_page.html", user_info=user_info)
     if request.method == "POST":
         username = request.form.get("username")
         username_for_log = username
         password = request.form.get("password")
-        correct, user_id, user_type ,username, first_name, last_name, company_id = login_check(username,password)
+        correct, user_id, user_type ,username, first_name, last_name, company_id, email = login_check(username,password)
         if (correct):
             session['user_id'] = user_id
             session['user_type'] = user_type
@@ -555,6 +578,11 @@ def login():
             session['first_name'] = first_name
             session['last_name'] = last_name
             session['company_id'] = company_id
+            if session['company_id'] != -1:
+                session['company_name'] = get_company_by_id(session['company_id'])[0][1]
+            else:
+                session['company_name'] = "Admin"
+            session['email'] = email
             check_unread_count(get_all_messages(session['username']))
             successful = "successful"
             date, time = get_current_time_date()

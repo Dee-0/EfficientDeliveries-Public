@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Remove a Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='barContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainContainer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+
+  <style>
+    select {
+            width: 40%;
+            height: 40px;
+        }
+  </style>
+</head>
+<body>
+
+{% include 'navbar.html' %}
+{% include 'routeBar.html' %}
+
+<div class="main-container">
+    <form action="/removeRoute" method="POST">
+        <h2>Routes:</h2>
+        </br>
+        <select id="route_id" name="route_id">
+                  {% for route in routes %}
+                  <option value="{{ route[0] }}">{{ route[7] }} {{ route[8] }} - - - {{ route[4] }} {{ route[5] }}</option>
+                  {% endfor %}
+                </select>
+        </br>
+        <div id="button-container">
+            </br>
+                <button type="submit" value="Submit">Remove Route</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

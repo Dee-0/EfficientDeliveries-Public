@@ -4,29 +4,41 @@ from route_calc import calculate_full_route
 from datetime import datetime
 
 
-# Save route
+# Save route, if cant locate address returns False and sends a message to the user that operation was unsuccessful
 def save_route(company_id, requested_by, origin, destinations):
     route_map, distance = calculate_full_route(origin, destinations)
-    route_date = datetime.now().strftime("%Y, %B %d - ")
-    route_time = datetime.now().strftime("%H;%M;%S")
-    route_map.save(f"templates/saved_routes/{route_date} {route_time}.html")
-    db_destinations = ""
-    for index in range(len(destinations)):
-        db_destinations += f"{destinations[index]}"
-        if index is not len(destinations) - 1:
-            db_destinations += ","
+    if route_map == 0 or distance == 0:
+        print("Could not make route, address error.")
+        return False
+    else:
+        route_date = datetime.now().strftime("%Y, %B %d - ")
+        route_time = datetime.now().strftime("%H;%M;%S")
+        route_map.save(f"templates/saved_routes/{route_date} {route_time}.html")
+        db_destinations = ""
+        for index in range(len(destinations)):
+            db_destinations += f"{destinations[index]}"
+            if index is not len(destinations) - 1:
+                db_destinations += ","
 
-    with sqlite3.connect("database.db") as routes:
-        cursor = routes.cursor()
-        cursor.execute(
-            "INSERT INTO routes(company_id, requested_by, assigned_to, origin, destinations, distance, date, time, file_name, completed) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            (company_id, requested_by, -1, origin, db_destinations, distance, route_date, route_time,
-             f"{route_date} {route_time}.html", 0))
-        routes.commit()
-        print("Added route to database")
-        return True
+        with sqlite3.connect("database.db") as routes:
+            cursor = routes.cursor()
+            cursor.execute(
+                "INSERT INTO routes(company_id, requested_by, assigned_to, origin, destinations, distance, date, time, file_name, completed) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                (company_id, requested_by, -1, origin, db_destinations, distance, route_date, route_time,
+                 f"{route_date} {route_time}.html", 0))
+            routes.commit()
+            print("Added route to database")
+            return True
     return False
 
+# Remove a route
+def remove_route_db(route_id):
+    with sqlite3.connect("database.db") as routes:
+        cursor = routes.cursor()
+        cursor.execute(f"DELETE from routes WHERE id = {route_id}")
+        routes.commit()
+        return True
+    return False
 
 # Get all routes from database
 def get_all_routes(company_id, completed):
